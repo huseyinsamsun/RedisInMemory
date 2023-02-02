@@ -24,7 +24,8 @@ namespace InMemoryApp.Web.Controllers
             //  options.Priority = CacheItemPriority.High; data benim için önemli 
             //options.Priority = CacheItemPriority.Normal; data benim için normal düzeyde önemli
             //  options.Priority = CacheItemPriority.Low;çokta önemli değil herhangi bir durumda sil
-             //options.Priority = CacheItemPriority.NeverRemove; ram dolsa bile asla silme
+            //options.Priority = CacheItemPriority.NeverRemove; ram dolsa bile asla silme
+            options.Priority = CacheItemPriority.High;
 
             var cache =   _memoryCache.Set<string>("zaman", DateTime.Now.ToString(),options);
              
