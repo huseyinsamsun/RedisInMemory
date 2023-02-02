@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using InMemoryApp.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace InMemoryApp.Web.Controllers
@@ -28,8 +30,11 @@ namespace InMemoryApp.Web.Controllers
             options.Priority = CacheItemPriority.High;
 
             var cache =   _memoryCache.Set<string>("zaman", DateTime.Now.ToString(),options);
-             
-          
+
+
+            Product product = new Product { Id = 1, Name = "Kalem", Price = 200 };
+            _memoryCache.Set<Product>("product:1", product);
+
             
 
             return Ok(cache);
@@ -37,14 +42,15 @@ namespace InMemoryApp.Web.Controllers
         [HttpGet(Name = "cache")]
         public IActionResult Show()
         {
-           
-            var getCache = _memoryCache.Get<string>("zaman");
-            _memoryCache.TryGetValue("callback", out string callback);
-            if(getCache!=null)
-            {
-                return Ok(getCache);
-            }
-            return Ok(callback);
+
+            //var getCache = _memoryCache.Get<string>("zaman");
+            //_memoryCache.TryGetValue("callback", out string callback);
+            //if(getCache!=null)
+            //{
+            //    return Ok(getCache);
+            //}
+            var product = _memoryCache.Get<Product>("product:1");
+            return Ok(product);
            
         }
     }
