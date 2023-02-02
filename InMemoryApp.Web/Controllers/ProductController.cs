@@ -21,8 +21,12 @@ namespace InMemoryApp.Web.Controllers
                 MemoryCacheEntryOptions options = new MemoryCacheEntryOptions();
             options.AbsoluteExpiration = DateTime.Now.AddMinutes(1);
             options.SlidingExpiration = TimeSpan.FromSeconds(10);
+            //  options.Priority = CacheItemPriority.High; data benim için önemli 
+            //options.Priority = CacheItemPriority.Normal; data benim için normal düzeyde önemli
+            //  options.Priority = CacheItemPriority.Low;çokta önemli değil herhangi bir durumda sil
+             //options.Priority = CacheItemPriority.NeverRemove; ram dolsa bile asla silme
 
-             var cache =   _memoryCache.Set<string>("zaman", DateTime.Now.ToString(),options);
+            var cache =   _memoryCache.Set<string>("zaman", DateTime.Now.ToString(),options);
              
           
             
