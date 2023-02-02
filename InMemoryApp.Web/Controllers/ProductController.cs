@@ -19,12 +19,12 @@ namespace InMemoryApp.Web.Controllers
 
 
                 MemoryCacheEntryOptions options = new MemoryCacheEntryOptions();
-            options.AbsoluteExpiration = DateTime.Now.AddMinutes(1);
-            options.SlidingExpiration = TimeSpan.FromSeconds(10);
-            //  options.Priority = CacheItemPriority.High; data benim için önemli 
-            //options.Priority = CacheItemPriority.Normal; data benim için normal düzeyde önemli
-            //  options.Priority = CacheItemPriority.Low;çokta önemli değil herhangi bir durumda sil
-            //options.Priority = CacheItemPriority.NeverRemove; ram dolsa bile asla silme
+            options.AbsoluteExpiration = DateTime.Now.AddSeconds(10);
+            //options.SlidingExpiration = TimeSpan.FromSeconds(10);
+            options.RegisterPostEvictionCallback((key, value, reason, state) =>
+            {
+                _memoryCache.Set("callback",$"{key}=> {value}=>sebep:{reason}");
+            });
             options.Priority = CacheItemPriority.High;
 
             var cache =   _memoryCache.Set<string>("zaman", DateTime.Now.ToString(),options);
@@ -39,11 +39,12 @@ namespace InMemoryApp.Web.Controllers
         {
            
             var getCache = _memoryCache.Get<string>("zaman");
+            _memoryCache.TryGetValue("callback", out string callback);
             if(getCache!=null)
             {
                 return Ok(getCache);
             }
-            return Ok("cache yok");
+            return Ok(callback);
            
         }
     }
